@@ -9,6 +9,9 @@ public class MiddleCrudApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(MiddleCrudApplication.class, args);
+
     }
 
 }
+
+

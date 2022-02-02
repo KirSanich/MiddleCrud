@@ -1,17 +1,16 @@
 package com.example.middlecrud.entity;
 
 
-import jdk.jfr.Timestamp;
+import com.example.middlecrud.validations.AgeValidationConstraint;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,13 +29,20 @@ public class User {
     private Long id;
 
 
+    @Size(min = 2, max = 10, message = "Incorrect length name!")
+    @Pattern(regexp = "[a-zA-Z]+", message = "Only letters!")
+    @NotBlank(message = "Non Empty")
     @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
-    private int age;
 
-    @Column(name = "date_created",updatable = false)
+
+    @Range(min = 6, max = 100)
+    @AgeValidationConstraint
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "date_created", updatable = false)
     @CreationTimestamp
     private LocalDateTime date_created;
 
@@ -45,8 +51,9 @@ public class User {
     private LocalDateTime date_last_updated;
 
 
-    @OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Passport> passportList;
+
 
     @Override
     public String toString() {
