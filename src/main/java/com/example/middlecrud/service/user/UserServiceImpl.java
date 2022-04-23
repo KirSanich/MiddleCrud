@@ -52,9 +52,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         logger.info("Изменения юзера с id {}", user.getId());
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
 

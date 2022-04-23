@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class PassportController {
@@ -50,7 +52,7 @@ public class PassportController {
     }
 
 
-    /*@GetMapping("/users/{id}/editPass/{pass_id}")
+    @GetMapping("/users/{id}/editPass/{pass_id}")
     public String getUpdatePassportForm(@PathVariable("id") Long id, @PathVariable("pass_id") Long pass_id, Model model) {
         Passport passport = passportService.getPassport(pass_id);
         User user = userService.getUser(id);
@@ -63,19 +65,22 @@ public class PassportController {
 
     @PutMapping("/users/{id}/updatePass/{pass_id}")
     public String updatePassport(@PathVariable("id") Long id, @Valid Passport passport, BindingResult result, @PathVariable("pass_id") Long pass_id, Model model) {
-
+        User user = userService.getUser(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("passport", passport);
+        model.addAllAttributes(map);
         if (result.hasErrors()) {
             passport.setId(pass_id);
             return "passports/update-passport";
         }
-
-        User user = userService.getUser(id);
-        passport.setUser(user);
-        passportService.updatePassport(pass_id);
+        passportService.updatePassport(passport);
         return "redirect:/users/" + id;
     }
 
-     */
+
+
+
 
 
 }
